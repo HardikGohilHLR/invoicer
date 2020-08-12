@@ -122,7 +122,7 @@
                                             </td>
                                             <td class="item-actions">                                                
                                                 <div class="form-group ">
-                                                    <button><i class="fas fa-ellipsis-h"></i></button>
+                                                    <button @click="invoiceActions($event, item, index)"><i class="fas fa-ellipsis-h"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -178,6 +178,7 @@
 
                 <button 
                     class="delete-btn" 
+                    @click="deleteInvoiceItem(actions_item)" 
                     :disabled="invoice.invoice_items.length == 1"
                 >
                     <i class="far fa-trash-alt"></i>
@@ -186,6 +187,7 @@
 
                 <button 
                     class="disable-btn"  
+                    @click="disableInvoiceItem(actions_item)" 
                     :disabled="invoice.invoice_items.length == 1"
                     v-if="actions_item.item.disabled == false"
                 >
@@ -195,6 +197,7 @@
 
                 <button 
                     class="enable-btn"  
+                    @click="enableInvoiceItem(actions_item)" 
                     v-if="actions_item.item.disabled == true"
                 >
                     <i class="fas fa-eye"></i>
@@ -209,6 +212,8 @@
 <script>
 // Date Picker
 import Datepicker from 'vuejs-datepicker';
+// Popup
+import { createPopper } from '@popperjs/core';
 // Vuelidate
 import { required, minValue, email } from 'vuelidate/lib/validators';
 
@@ -288,8 +293,8 @@ export default {
             }
         }
     },
-    methods: {
 
+    methods: {
         // Add Item
         addItem(){  
             this.invoice_items++;
@@ -308,7 +313,56 @@ export default {
             let item_total = qty * price;
             return parseFloat(item_total).toFixed(2);
         },
-             
+        
+        // Invoice Actions
+        invoiceActions($event, item, index){  
+            if(this.actions_item.index == index) {
+                this.hidePopup();   
+            } else {                
+                // Tooltip
+                const tooltip = document.querySelector('#table-invoice-actions-popup');
+    
+                this.actions_item = {
+                    index,
+                    item
+                };    
+                this.actions_item_popup = true;            
+    
+                createPopper($event.target, tooltip, {
+                    placement: 'bottom',
+                });  
+            }
+        },
+
+        hidePopup(){
+            this.actions_item = '';    
+            this.actions_item_popup = false;    
+        },
+
+        // Delete Invoice Item
+        deleteInvoiceItem(item){
+            if(this.invoice.invoice_items.length > 1) {
+                this.invoice.invoice_items.splice(item.index, 1);
+                this.hidePopup();
+            }
+
+            this.invoice.invoice_items.forEach((value, index) => {
+                value.item_id = index + 1;                
+            });
+           
+        },
+
+        // Disable Invoice Item
+        disableInvoiceItem(item){
+            item.item.disabled = true;
+            this.hidePopup();
+        },
+        
+        // Enable Invoice Item
+        enableInvoiceItem(item){
+            item.item.disabled = false;
+            this.hidePopup();
+        },        
 
         // Invoice Valiidation
         validateInvoice(){
@@ -316,6 +370,7 @@ export default {
             if(this.$v.invoice.$error) { return; }
             return true;
         },
+
     },
 }
 </script>
