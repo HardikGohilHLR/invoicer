@@ -8,6 +8,11 @@ Vue.config.productionTip = false;
 import './assets/styles/base.scss';
 import 'currency-flags/dist/currency-flags.css';
 
+// Vuelidate
+import Vuelidate from 'vuelidate';
+Vue.use(Vuelidate);
+
+
 new Vue({
   router,
   render: h => h(App)
