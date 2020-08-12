@@ -14,14 +14,5 @@ export default {
 	components: {
 		AppFooter
 	},
-	watch: {
-		// Update Title
-		$route: {
-			immediate: true,
-			handler(to) {
-				document.title = to.meta.title || 'Invoice - Invoice Builder';
-			}
-		},
-	}
 }
 </script>

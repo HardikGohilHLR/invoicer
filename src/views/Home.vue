@@ -298,20 +298,26 @@ export default {
         }
     },
 
-    watch: {        
-        // Update Title
-        $route: {
-            immediate: true,
-            handler(to) {
-                document.title = to.meta.title || 'Invoice Builder';
-            }
-        },
-    },
-
     methods: {
+        
+        // Add Item
+        addItem(){  
+            this.invoice_items++;
+            this.invoice.invoice_items.push({       
+                item_id: this.invoice_items,      
+                item_name: '',
+                item_qty: 1,
+                item_price: null,
+                item_total: 0.00, 
+                disabled: false                    
+            });
+        },
+        
+        // Late Fess Update
         updateLateFees(){
             this.late_fee = this.invoice.invoice_late_fees;
         },
+        
         // Invoice Options Updated
         invoiceOptionsUpdated(options){     
 
@@ -338,19 +344,6 @@ export default {
                 }
             }); 
             
-        },
-
-        // Add Item
-        addItem(){  
-            this.invoice_items++;
-            this.invoice.invoice_items.push({       
-                item_id: this.invoice_items,      
-                item_name: '',
-                item_qty: 1,
-                item_price: null,
-                item_total: 0.00, 
-                disabled: false                    
-            });
         },
 
         // Get Item Total 
