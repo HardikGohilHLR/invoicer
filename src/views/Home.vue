@@ -167,6 +167,7 @@
                 <!-- Invoice Options -->
                 <invoice-options 
                     :invoice="invoice" 
+                    @invoiceOptionsUpdated="invoiceOptionsUpdated" 
                     @sendInvoice="sendInvoice"
                     @previewInvoice="previewInvoice"
                     @downloadInvoice="downloadInvoice"
@@ -279,7 +280,7 @@ export default {
             late_fee: '',
         }
     }, 
-    
+
     validations: {
         invoice: {
             from_name: { required, },
@@ -297,7 +298,47 @@ export default {
         }
     },
 
+    watch: {        
+        // Update Title
+        $route: {
+            immediate: true,
+            handler(to) {
+                document.title = to.meta.title || 'Invoice Builder';
+            }
+        },
+    },
+
     methods: {
+        updateLateFees(){
+            this.late_fee = this.invoice.invoice_late_fees;
+        },
+        // Invoice Options Updated
+        invoiceOptionsUpdated(options){     
+
+            this.invoice_options.currency = options.currency;
+
+            // Add Dynamic Property            
+            this.invoice_options.invoice_extras.forEach(value => {
+                value.is_added = options.invoice_extras.includes(value.name) ? true : false;
+            });        
+
+            let values = [];
+            this.invoice_options.invoice_extras.forEach(value => {
+                if(value.is_added) {
+                    values.push(value.name);              
+                    this.invoice_extra = values;
+                    if(!this.invoice[value.name]){
+                        this.invoice[value.name] = null;
+                    }
+                } else {
+                    delete this.invoice[value.name];                    
+                    var index = this.invoice_extra.indexOf(value.name);
+                    if (index !== -1) this.invoice_extra.splice(index, 1);
+                    this.updateLateFees();
+                }
+            }); 
+            
+        },
 
         // Add Item
         addItem(){  

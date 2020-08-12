@@ -6,7 +6,7 @@
         <div class="currency-select">
             <div class="currency-flag" :class="`currency-flag-${currency.code.toLowerCase()}`"></div>
 
-            <select v-model="currency" >
+            <select v-model="currency"  @change="currencyUpdated">
                 <option v-for="currency in currencies" :key="currency.flag" :value="currency">
                     {{ currency.code }} ( {{ currency.name }} )
                 </option>
@@ -45,6 +45,11 @@ export default {
         });
     },
 
+    methods: {
+        currencyUpdated(){            
+            this.$emit('invoiceCurrencyUpdated', this.currency);             
+        },
+    }
 }
 
 </script>

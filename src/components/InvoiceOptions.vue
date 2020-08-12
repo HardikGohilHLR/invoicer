@@ -6,19 +6,19 @@
         <!-- / Invoice Actions Component -->
 
         <!-- Invoice Currency Component -->
-        <invoice-currency/>
+        <invoice-currency @invoiceCurrencyUpdated="invoiceCurrencyUpdated" />
         <!-- / Invoice Currency Component -->
 
         <!-- Invoice Extra Options -->
         <div class="invoice-details-options border-bottom">
 
             <div class="checkbox-group">
-                <input type="checkbox" id="invoice_notes" value="invoice_notes" v-model="invoice_options.invoice_extras">
+                <input type="checkbox" id="invoice_notes" value="invoice_notes" v-model="invoice_options.invoice_extras" @change="invoiceOptionsUpdated">
                 <label for="invoice_notes">notes</label>
             </div>
             
             <div class="checkbox-group">
-                <input type="checkbox" id="invoice_fees" value="invoice_late_fees" v-model="invoice_options.invoice_extras">
+                <input type="checkbox" id="invoice_fees" value="invoice_late_fees" v-model="invoice_options.invoice_extras" @change="invoiceOptionsUpdated">
                 <label for="invoice_fees">late fees</label>
             </div>
 
@@ -51,6 +51,16 @@ export default {
         InvoiceActions,
     }, 
     methods: {
+        invoiceOptionsUpdated(){
+            this.$emit('invoiceOptionsUpdated', this.invoice_options);             
+        },
+
+        // Invoice Currency Update
+        invoiceCurrencyUpdated(currency){
+            this.invoice_options.currency = currency;            
+            this.$emit('invoiceOptionsUpdated', this.invoice_options);     
+        },
+
         // Invoice Actions
         invoiceAction(action){
             if(action == "send") {
