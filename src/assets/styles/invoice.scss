@@ -1,0 +1,152 @@
+.invoice-wpr{
+    padding: 60px;
+
+    @media (max-width: 1440px){
+        padding: 50px 10px;
+    }
+
+    .invoice-details-items{  
+        margin: 0 auto;
+    }
+
+    .invoice-date{
+        span{
+            color: #7f8e9e;
+            font-weight: 600;
+        }
+    }
+
+    .invoice-bill{
+        div{
+            padding: 10px;
+            border-radius: 4px;
+            background: #f5f7f9;
+            p{
+                line-height: 26px;
+                display: flex;
+                font-weight: 400;
+            }
+            span{
+                display: block;
+                max-width: 70px;
+                width: 100%;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .invoice-items{
+        th, td{
+            text-align: center;
+            padding: 10px;
+            border-right: 1px solid #eef2f6;
+        }
+        td{
+            p{
+                font-weight: 400;
+            }
+
+        }
+        tr{
+            th{
+                &:first-child{
+                    border-left: 1px solid #eef2f6;
+                }
+                &:nth-child(2){
+                    text-align: left;
+                }
+            }
+            &:first-child{
+                td{
+                    padding: 10px;
+                }
+            }
+        }
+        .item-number{
+            border-left: 1px solid #eef2f6;
+
+        }
+        .item-name{
+            text-align: left;
+        }
+        .item-total{
+            text-align: right;
+            padding-right: 10px;
+            p{
+                font-weight: 600;
+            }
+        }
+    }
+
+    .invoice-items-footer{
+        justify-content: flex-end;
+        .invoice-final-amount{
+            max-width: 40%;
+        }
+        .invoice-total-amount-wpr, .invoice-total{
+            padding-right: 10px;
+        }
+
+    }
+
+    .invoice-notes{
+        .form-group{
+            background: #f5f7f9;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(245, 247, 249, 0.8);
+        }
+    }
+
+    .print-invoice{
+        margin-top: 20px;
+        margin-left: auto;
+        max-width: 200px;
+    }
+
+    // In Print
+    &.invoice-print{        
+        padding: 0;
+        
+        .invoice-container{
+            padding: 0;
+            max-width: 100%;
+        }
+        .invoice-details-items{
+            padding: 10px 0;
+            max-width: 100%;
+        }
+        .print-invoice{
+            display: none;
+        }
+    }
+}
+
+.invoice-printing{
+    background: #fff;
+}
+// Invoice Sign
+.invoice-sign {
+    padding: 40px 40px 10px;
+    .sign {
+        max-width: 250px;
+        width: 100%;
+        text-align: center;
+        padding-top: 20px;
+        p{
+            margin-top: 10px;
+        }
+    }
+}
+
+// Invoice Download
+.invoice-download{
+    
+    .invoice-details-items{       
+        max-width: 800px;
+        padding-bottom: 80px;
+    }
+    .print-invoice{
+        display: none;
+    }
+}
