@@ -1,19 +1,19 @@
 <template>
 
    <div class="invoice-details-actions border-bottom">
-        <div class="send-invoice">
-            <button class="btn black-btn">
+        <!-- <div class="send-invoice">
+            <button class="btn black-btn" @click="sendInvoice">
                 <i class="fab fa-telegram-plane"></i>
                 send invoice
             </button>
             <span class="user-note" v-if="!send_invoice_able">Please Log in with google to send invoice..</span>
-        </div>
+        </div> -->
 
         <div class="get-invoice d-flex-sb">
-            <button class="btn white-btn preview-btn">
+            <button class="btn white-btn preview-btn" @click="previewInvoice">
                 preview
             </button>
-            <button class="btn white-btn download-btn">
+            <button class="btn white-btn download-btn" @click="downloadInvoice">
                 download
             </button>
         </div>
@@ -32,6 +32,25 @@ export default {
         }
     },
     methods: {
+        // Send Invoice
+        // sendInvoice(){
+        //     if(this.send_invoice){
+        //         this.send_invoice_able = true;             
+        //         this.$emit('invoiceAction', 'send');
+        //     } else {                
+        //         this.send_invoice_able = false;                
+        //     }
+        // },
+        
+        // Preview Invoice
+        previewInvoice(){
+            this.$emit('invoiceAction', 'preview');
+        },
+
+        // Download Invoice
+        downloadInvoice(){
+            this.$emit('invoiceAction', 'download');
+        }
     }
 }
 </script>

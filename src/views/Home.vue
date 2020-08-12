@@ -167,6 +167,9 @@
                 <!-- Invoice Options -->
                 <invoice-options 
                     :invoice="invoice" 
+                    @sendInvoice="sendInvoice"
+                    @previewInvoice="previewInvoice"
+                    @downloadInvoice="downloadInvoice"
                 />
 
             </div>
@@ -276,7 +279,7 @@ export default {
             late_fee: '',
         }
     }, 
-
+    
     validations: {
         invoice: {
             from_name: { required, },
@@ -295,6 +298,7 @@ export default {
     },
 
     methods: {
+
         // Add Item
         addItem(){  
             this.invoice_items++;
@@ -371,6 +375,33 @@ export default {
             return true;
         },
 
+        // Send Invoice
+        sendInvoice(data){
+            // Validate invoice
+            this.previewInvoice(data);
+        },
+
+        // Preview Invoice
+        previewInvoice(data){            
+            // Validate invoice
+            if(this.validateInvoice()) {
+
+                let invoice = this.invoice;
+                invoice.invoice_options = this.invoice_options;
+                invoice.invoice_action = data;
+
+                // Store Invoice in storage
+                localStorage.setItem('invoice_data', JSON.stringify(invoice));
+                // Route
+                let route = this.$router.resolve({ name: 'invoice', params: { invoice: this.invoice } });
+                window.open(route.href, '_blank');
+            }
+        },
+        
+        // Download Invoice
+        downloadInvoice(data) {
+            this.previewInvoice(data);
+        },
     },
 }
 </script>

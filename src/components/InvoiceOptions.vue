@@ -1,12 +1,12 @@
 <template>
     <div class="invoice-details-wpr">
-
+            
         <!-- Invoice Actions Component -->
-        <invoice-actions :send_invoice="send_invoice"/>
+        <invoice-actions @invoiceAction="invoiceAction" :send_invoice="send_invoice"/>
         <!-- / Invoice Actions Component -->
 
         <!-- Invoice Currency Component -->
-        <invoice-currency />
+        <invoice-currency/>
         <!-- / Invoice Currency Component -->
 
         <!-- Invoice Extra Options -->
@@ -23,7 +23,6 @@
             </div>
 
         </div>
-
     </div>
 
 </template>
@@ -49,9 +48,21 @@ export default {
     
     components: {
         InvoiceCurrency,
-        InvoiceActions
+        InvoiceActions,
     }, 
     methods: {
+        // Invoice Actions
+        invoiceAction(action){
+            if(action == "send") {
+                this.$emit('sendInvoice', 'send');                 
+
+            } else if (action == "preview") {  
+                this.$emit('previewInvoice', 'preview');  
+
+            } else {       
+                this.$emit('downloadInvoice', 'download');  
+            }
+        },
     }
 
 }
