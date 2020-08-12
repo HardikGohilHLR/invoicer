@@ -114,7 +114,10 @@
                                             </td>
                                             <td class="item-total" style="width: 20%">
                                                 <div class="form-group ">
-                                                    <span></span>
+                                                    <span>
+                                                        {{ invoice_options.currency.symbol }} 
+                                                        {{ invoice.invoice_items[index].item_total = getItemTotal(invoice.invoice_items[index].item_qty, invoice.invoice_items[index].item_price) }}
+                                                    </span>
                                                 </div>
                                             </td>
                                             <td class="item-actions">                                                
@@ -285,17 +288,6 @@ export default {
             }
         }
     },
-
-    watch: {        
-        // Update Title
-        $route: {
-            immediate: true,
-            handler(to) {
-                document.title = to.meta.title || 'Invoice Builder';
-            }
-        },
-    },
-
     methods: {
 
         // Add Item
@@ -311,13 +303,19 @@ export default {
             });
         },
 
+        // Get Item Total 
+        getItemTotal(qty, price){
+            let item_total = qty * price;
+            return parseFloat(item_total).toFixed(2);
+        },
+             
+
         // Invoice Valiidation
         validateInvoice(){
             this.$v.invoice.$touch();
             if(this.$v.invoice.$error) { return; }
             return true;
         },
-
     },
 }
 </script>
