@@ -114,8 +114,7 @@
                                             </td>
                                             <td class="item-total" style="width: 20%">
                                                 <div class="form-group ">
-                                                    <span>
-                                                    </span>
+                                                    <span></span>
                                                 </div>
                                             </td>
                                             <td class="item-actions">                                                
@@ -130,7 +129,7 @@
 
                             <div class="invoice-items-footer d-flex">
                                 <div class="add-item">
-                                    <button v-if="invoice.invoice_items.length < 15">add item</button>
+                                    <button @click="addItem" v-if="invoice.invoice_items.length < 15">add item</button>
                                 </div>
                                 <!-- Invoice Total -->
                                 <invoice-total :invoice="invoice" :invoice_options="invoice_options" :late_fee="late_fee">
@@ -183,7 +182,7 @@
                 </button>
 
                 <button 
-                    class="disable-btn"   
+                    class="disable-btn"  
                     :disabled="invoice.invoice_items.length == 1"
                     v-if="actions_item.item.disabled == false"
                 >
@@ -206,7 +205,7 @@
 
 <script>
 // Date Picker
-import Datepicker from 'vuejs-datepicker';  
+import Datepicker from 'vuejs-datepicker';
 // Vuelidate
 import { required, minValue, email } from 'vuelidate/lib/validators';
 
@@ -286,7 +285,32 @@ export default {
             }
         }
     },
+
+    watch: {        
+        // Update Title
+        $route: {
+            immediate: true,
+            handler(to) {
+                document.title = to.meta.title || 'Invoice Builder';
+            }
+        },
+    },
+
     methods: {
+
+        // Add Item
+        addItem(){  
+            this.invoice_items++;
+            this.invoice.invoice_items.push({       
+                item_id: this.invoice_items,      
+                item_name: '',
+                item_qty: 1,
+                item_price: null,
+                item_total: 0.00, 
+                disabled: false                    
+            });
+        },
+
         // Invoice Valiidation
         validateInvoice(){
             this.$v.invoice.$touch();
