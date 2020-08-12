@@ -3,16 +3,16 @@
 		<router-view />
 
 		<!-- Footer -->
-		<Footer />
+		<app-footer />
 	</div>
 </template>
 
 <script>
-import Footer from "@/components/Footer.vue";
+import AppFooter from "@/components/AppFooter.vue";
 export default {
 	name: 'App',
 	components: {
-		Footer
+		AppFooter
 	},
 	watch: {
 		// Update Title
