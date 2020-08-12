@@ -114,7 +114,8 @@
                                             </td>
                                             <td class="item-total" style="width: 20%">
                                                 <div class="form-group ">
-                                                    <span> </span>
+                                                    <span>
+                                                    </span>
                                                 </div>
                                             </td>
                                             <td class="item-actions">                                                
@@ -129,8 +130,25 @@
 
                             <div class="invoice-items-footer d-flex">
                                 <div class="add-item">
-                                    <button  v-if="invoice.invoice_items.length < 15">add item</button>
+                                    <button v-if="invoice.invoice_items.length < 15">add item</button>
                                 </div>
+                                <!-- Invoice Total -->
+                                <invoice-total :invoice="invoice" :invoice_options="invoice_options" :late_fee="late_fee">
+                                    <div 
+                                        class="invoice-sub-total invoice-late-fees d-flex-all" 
+                                        v-if="invoice_extra.includes('invoice_late_fees')"
+                                    >
+                                        <p>late fees</p>
+                                        <span>                                              
+                                            <div class="form-group d-flex-center">                                                
+                                                {{ invoice_options.currency.symbol }} 
+                                                <input type="number" v-model="invoice.invoice_late_fees" @keyup="updateLateFees()"/>
+                                            </div>
+                                        </span>                            
+                                    </div>
+                                </invoice-total>
+                                
+                                <!-- / Invoice Total -->
 
                             </div>
                         </div>
@@ -143,6 +161,12 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Invoice Options -->
+                <invoice-options 
+                    :invoice="invoice" 
+                />
+
             </div>
         </div>
 
@@ -151,7 +175,7 @@
             <div class="table-invoice-actions" v-if="actions_item_popup">
 
                 <button 
-                    class="delete-btn"  
+                    class="delete-btn" 
                     :disabled="invoice.invoice_items.length == 1"
                 >
                     <i class="far fa-trash-alt"></i>
@@ -182,14 +206,19 @@
 
 <script>
 // Date Picker
-import Datepicker from 'vuejs-datepicker';
+import Datepicker from 'vuejs-datepicker';  
 // Vuelidate
 import { required, minValue, email } from 'vuelidate/lib/validators';
+
+import InvoiceOptions from '@/components/InvoiceOptions';
+import InvoiceTotal from '@/components/InvoiceTotal';
 
 export default {
     name: 'home',    
     components: {
         Datepicker,
+        InvoiceOptions,
+        InvoiceTotal,
     },
     data() {
         return {
@@ -257,9 +286,7 @@ export default {
             }
         }
     },
-
     methods: {
-		
         // Invoice Valiidation
         validateInvoice(){
             this.$v.invoice.$touch();
