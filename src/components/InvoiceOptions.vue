@@ -1,19 +1,24 @@
 <template>
-    <div class="invoice-details-wpr">            
+    <div class="invoice-details-wpr">
+
         <!-- Invoice Actions Component -->
         <invoice-actions :send_invoice="send_invoice"/>
         <!-- / Invoice Actions Component -->
+
+        <!-- Invoice Currency Component -->
+        <invoice-currency />
+        <!-- / Invoice Currency Component -->
 
         <!-- Invoice Extra Options -->
         <div class="invoice-details-options border-bottom">
 
             <div class="checkbox-group">
-                <input type="checkbox" id="invoice_notes" value="invoice_notes" v-model="invoice_options.invoice_extras" >
+                <input type="checkbox" id="invoice_notes" value="invoice_notes" v-model="invoice_options.invoice_extras">
                 <label for="invoice_notes">notes</label>
             </div>
             
             <div class="checkbox-group">
-                <input type="checkbox" id="invoice_fees" value="invoice_late_fees" v-model="invoice_options.invoice_extras" >
+                <input type="checkbox" id="invoice_fees" value="invoice_late_fees" v-model="invoice_options.invoice_extras">
                 <label for="invoice_fees">late fees</label>
             </div>
 
@@ -24,6 +29,8 @@
 </template>
 
 <script>
+
+import InvoiceCurrency from "@/components/InvoiceCurrency.vue";
 import InvoiceActions from "@/components/InvoiceActions.vue";
 
 export default {
@@ -41,6 +48,7 @@ export default {
     },
     
     components: {
+        InvoiceCurrency,
         InvoiceActions
     }, 
     methods: {
