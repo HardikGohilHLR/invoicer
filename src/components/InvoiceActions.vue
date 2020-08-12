@@ -9,11 +9,15 @@
             <span class="user-note" v-if="!send_invoice_able">Please Log in with google to send invoice..</span>
         </div> -->
 
-        <div class="get-invoice d-flex-sb">
-            <button class="btn white-btn preview-btn" @click="previewInvoice">
+        <div class="send-invoice">
+            <button class="btn black-btn preview-btn" @click="previewInvoice">
+                <i class="fab fa-telegram-plane"></i>
                 preview
             </button>
-            <button class="btn white-btn download-btn" @click="downloadInvoice">
+        </div>
+        <div class="send-invoice">
+            <button class="btn blue-btn download-btn" @click="downloadInvoice">
+                <i class="fas fa-file-download"></i>
                 download
             </button>
         </div>
