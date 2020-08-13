@@ -9,13 +9,13 @@ const routes = [
         path: '/',
         name: 'home',
         component: Home,
-        meta: { title: 'Create Invoice - Invoicer' }
+        meta: { title: 'Create Invoice - Invoicia' }
     },
     {
         path: '/invoice',
         name: 'invoice',
         component: () => import('../views/Invoice.vue') ,  
-        meta: { title: 'Invoice - Invoicer' }
+        meta: { title: 'Invoice - Invoicia' }
     },
 ];
 
