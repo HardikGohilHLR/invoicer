@@ -43,6 +43,9 @@ export default {
                 this.currencies.push(currency);      
             });
         });
+
+        this.$emit('invoiceCurrencyUpdated', this.currency);             
+
     },
 
     methods: {

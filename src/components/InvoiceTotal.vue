@@ -25,7 +25,8 @@ export default {
     props: {
         invoice: {},
         invoice_options: {},
-        late_fee: {}
+        late_fee: {},
+        discount: {}
     },
     data(){
         return {
@@ -41,6 +42,9 @@ export default {
             this.getTotalAmount();   
         },
         late_fee(){
+            this.getTotalAmount();   
+        },
+        discount(){
             this.getTotalAmount();   
         },
     },
@@ -61,8 +65,12 @@ export default {
         getTotalAmount(){            
             let sub_total = this.getSubTotal();            
             let late_fees = this.this_invoice.invoice_late_fees || 0 ;            
-            let total_amount = parseFloat(sub_total) + parseFloat(late_fees);            
-            this.total_amount = total_amount.toFixed(2);
+            let discount = this.this_invoice.discount || 0 ;            
+            let total_amount = parseFloat(sub_total) + parseFloat(late_fees);     
+            
+            let price = total_amount - ( total_amount * discount / 100 );
+            
+            this.total_amount = price.toFixed(2);
             // return `${total_amount}`;
         },
     } 

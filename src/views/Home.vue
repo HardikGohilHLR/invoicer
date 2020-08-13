@@ -132,9 +132,10 @@
                             <div class="invoice-items-footer d-flex">
                                 <div class="add-item">
                                     <button @click="addItem" v-if="invoice.invoice_items.length < 15">add item</button>
+                                    <button @click="addDiscount">{{ invoice_discount ? 'remove' : 'add' }} discount</button>
                                 </div>
                                 <!-- Invoice Total -->
-                                <invoice-total :invoice="invoice" :invoice_options="invoice_options" :late_fee="late_fee">
+                                <invoice-total :invoice="invoice" :invoice_options="invoice_options" :late_fee="late_fee" :discount="invoice.discount">
                                     <div 
                                         class="invoice-sub-total invoice-late-fees d-flex-all" 
                                         v-if="invoice_extra.includes('invoice_late_fees')"
@@ -147,6 +148,16 @@
                                             </div>
                                         </span>                            
                                     </div>
+
+                                    <div class="invoice-sub-total invoice-discount d-flex-all" v-if="invoice_discount" >
+                                        <p>discount (in %)</p>
+                                        <span>                                              
+                                            <div class="form-group d-flex-center">         
+                                                <input type="number" v-model="invoice.discount" @keyup="discountUpdate"/>
+                                            </div>
+                                        </span>                            
+                                    </div>
+
                                 </invoice-total>
                                 
                                 <!-- / Invoice Total -->
@@ -248,6 +259,7 @@ export default {
                 from_address: '',
                 to_email: '',
                 to_address: '',
+                discount: '',
 
                 invoice_items: [
                     {
@@ -260,6 +272,7 @@ export default {
                     }
                 ]
             },
+            invoice_discount: false,
             invoice_complete: false,
             invoice_options: { 
                 currency: { code: "INR", name: "Indian rupee", symbol: "₹", flag: "https://restcountries.eu/data/ind.svg" },
@@ -310,11 +323,25 @@ export default {
                 disabled: false                    
             });
         },
+
+        // Add Discount
+        addDiscount(){
+            this.invoice_discount = !this.invoice_discount;
+
+            if (!this.invoice_discount) {
+                this.invoice.discount = '';
+            }
+        },
+
+        discountUpdate(){
+            this.invoice.discount = this.invoice.discount > 100 ? 100 : this.invoice.discount;
+            this.invoice.discount = this.invoice.discount <= 0 ? this.invoice.discount = 0 : this.invoice.discount;
+        },
         
         // Late Fess Update
         updateLateFees(){
             this.late_fee = this.invoice.invoice_late_fees;
-        },
+        },   
         
         // Invoice Options Updated
         invoiceOptionsUpdated(options){     
