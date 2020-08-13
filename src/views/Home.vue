@@ -45,7 +45,6 @@
                                 <div class="form-group">
                                     <input type="email" name="from-email" placeholder="Email" v-model="invoice.from_email" 
                                     :class="{ 'input_error': $v.invoice.from_email.$error }" 
-                                    :disabled="invoice.from_email !== ''"
                                     >
                                 </div>
 
@@ -276,7 +275,6 @@ export default {
             actions_item: '',
             sub_total: 0,
             total_amount: 0,
-            google_login_details: '',
             late_fee: '',
         }
     }, 
