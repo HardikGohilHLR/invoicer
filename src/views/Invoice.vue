@@ -100,6 +100,14 @@
                                                     <div class="form-group d-flex-center"> {{ invoice.invoice_options.currency.symbol }} {{ invoice.invoice_late_fees }} </div>
                                                 </span>
                                             </div>
+
+                                            <div class="invoice-sub-total invoice-late-fees d-flex-all" v-if="invoice.discount">
+                                                <p>discount</p>
+                                                <span>
+                                                    <div class="form-group d-flex-center">  {{ invoice.discount }} %</div>
+                                                </span>
+                                            </div>
+                                            
                                             
                                         </div>
 
@@ -205,8 +213,13 @@ export default {
         // Total Bill Amount
         getTotalAmount(){            
             let sub_total = this.getSubTotal();            
-            let late_fees = this.invoice.invoice_late_fees || 0 ;            
-            let total_amount = parseFloat(sub_total) + parseFloat(late_fees);   
+            let late_fees = this.invoice.invoice_late_fees || 0 ;          
+            let discount = this.invoice.discount || 0 ;            
+            let total_amount = parseFloat(sub_total) + parseFloat(late_fees);     
+            
+            let price = total_amount - ( total_amount * discount / 100 );
+            
+            total_amount = price.toFixed(2);       
             return `${total_amount}`;
         },
 
