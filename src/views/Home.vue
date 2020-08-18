@@ -25,7 +25,8 @@
                         </div>
 
                         <div class="invoice-number">
-                            <h1>Invoice <span>#{{ invoice.id }}</span></h1>
+                            <!-- <h1>Invoice <span>#{{ invoice.id }}</span></h1> -->
+                            <img src="../assets/images/invoicia.svg"/>
                         </div>
                     </div>
 
