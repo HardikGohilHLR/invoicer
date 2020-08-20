@@ -1,6 +1,9 @@
 <template>
-    <div class="home main-container"  ref="content">
-        <div class="invoice-container">
+    <div class="home main-container" ref="content">
+
+        <loader v-if="loader"/>
+
+        <div class="invoice-container" v-else>
             <div class="invoice-container-wpr">
 
                 <div class="invoice-details-items">
@@ -220,7 +223,7 @@
                 </button>
             </div>
         </div>
-
+  
     </div>
 </template>
 
@@ -234,12 +237,14 @@ import { required, minValue, email } from 'vuelidate/lib/validators';
 
 import InvoiceOptions from '@/components/InvoiceOptions';
 import InvoiceTotal from '@/components/InvoiceTotal';
+import Loader from '@/components/Loader';
 
 export default {
     name: 'home',    
     components: {
         Datepicker,
         InvoiceOptions,
+        Loader,
         InvoiceTotal,
     },
     data() {
@@ -290,6 +295,7 @@ export default {
             sub_total: 0,
             total_amount: 0,
             late_fee: '',
+            loader: true,
         }
     }, 
 
@@ -308,6 +314,12 @@ export default {
                 }
             }
         }
+    },
+
+    created(){
+        setTimeout(() => {
+            this.loader = false;            
+        }, 2000);
     },
 
     methods: {

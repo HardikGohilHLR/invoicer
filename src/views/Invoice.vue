@@ -1,13 +1,10 @@
 <template>
-
-
     <div class="invoice main-container">
+        <!-- Loader -->
+        <loader v-if="loader"/>
 
-        <!-- Notification -->
-        <notification :notification="notification_content" v-if="notification_content"/>
-        
         <!-- Invoice -->
-        <div id="invoice_print" v-if="all_completed">
+        <div id="invoice_print" v-else>
             <div class="invoice-wpr">
                 <div class="invoice-container">
                     <div class="invoice-details-items">
@@ -143,7 +140,7 @@
                         </div>
 
                         <!-- Print Invoice  -->
-                        <div class="print-invoice">
+                        <div class="print-invoice" v-if="this.invoice.invoice_action != 'download'">
                             <button class="btn blue-btn" @click="printInvoice">
                                 <i class="fas fa-print"></i>
                                 print invoice
@@ -155,46 +152,49 @@
             </div>
 
         </div>
+        
+        <!-- Notification -->
+        <notification :notification="notification_content" v-if="notification_content"/>
+        
 
     </div>
         
 </template>
 
 <script>
-
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import axios from "axios";
-
 import Notification from "@/components/Notification.vue";
+import Loader from '@/components/Loader';
 
 export default {
     name: 'invoice',
     components: {
-        Notification
+        Notification,
+        Loader
     },
     data() {
         return {
             invoice: '',
             all_completed: false, 
             notification_content: '',
+            loader: true,
         }
     },
 
     created(){
         let invoice_data = JSON.parse(localStorage.getItem('invoice_data'));
         this.invoice = invoice_data;
-        this.all_completed = true;              
+        this.loader = false;              
     },
 
     mounted(){        
-        if(this.all_completed) {
-            if(this.invoice.invoice_action == 'download') {                
-                this.downloadInvoice();                
-            } else if(this.invoice.invoice_action == 'send') {                
-                this.sendInvoice();                
-            }   
-        }
+        if(this.invoice.invoice_action == 'download') {  
+            this.loader = true;                     
+            this.downloadInvoice();                
+        } else if(this.invoice.invoice_action == 'send') {                
+            this.sendInvoice();                
+        }   
     },
 
     methods: {
@@ -277,36 +277,12 @@ export default {
                 }
 
                 if(type == 'download') {
+                    this.loader = false;
                     // Download Invoice
                     pdf.save('file.pdf', {returnPromise:true}).then(() => {    
                         document.querySelector('.invoice-wpr').classList.remove('invoice-download');
                     });
 
-                } else {
-                    // Send Invoice
-                    let session_details = '';
-                    if (this.$session.exists()) {
-                        session_details = this.$session.getAll();
-                    } 
-                    var pdf_file = pdf.output('datauristring');    
-
-                    this.all_completed = false; 
-                    // axios.post('http://localhost:3001/send_invoice', {
-                    axios.post('https://invoice-builder-vue.herokuapp.com/send_invoice', {
-                        'pdf_content': pdf_file,
-                        'invoice': this.invoice,
-                        'session_details': session_details 
-                    }).
-                    then((res) => {                        
-                        this.all_completed = true; 
-                        if(res.data.isError == false) {                        
-                            this.notification_content = res.data.msg;
-                        } else {       
-                            console.log(res.data);
-                            
-                            this.notification_content = 'Please try again after sometimes...';        
-                        }
-                    })
                 }
                             
                 document.querySelector('.invoice-wpr').classList.remove('invoice-download');
