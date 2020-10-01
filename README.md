@@ -1,4 +1,6 @@
 # invoicer
+- A simple invoice builder for your business where you can create your invoices in less time.
+- you can create and mail the invoice to any person you want.
 
 ## Project setup
 ```
